@@ -3,7 +3,7 @@ import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, View } from 'react-native';
 import { useSharedValue } from 'react-native-reanimated';
 
-import { ProgressBar } from './components/Progress';
+import { ProgressBar } from './components/ProgressBar';
 
 export default function App() {
   const progress = useSharedValue(0);
