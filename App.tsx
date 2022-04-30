@@ -3,7 +3,9 @@ import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, View } from 'react-native';
 import { useSharedValue } from 'react-native-reanimated';
 
+import { palette } from './styles'
 import { ProgressBar } from './components/ProgressBar';
+import { ProgressCircle } from './components/ProgressCircle';
 
 export default function App() {
   const progress = useSharedValue(0);
@@ -21,16 +23,23 @@ export default function App() {
     <View style={styles.container}>
       <StatusBar hidden />
       <ProgressBar height={20} progress={progress} />
+
+      <View style={styles.circleContainer}>
+        <ProgressCircle width={180} thickness={20} progress={progress} />
+      </View>
       
     </View>
   );
 }
 
 const styles = StyleSheet.create({
+  circleContainer: {
+    alignItems: 'center'
+  },
   container: {
+    backgroundColor: palette.white,
     flex: 1,
-    backgroundColor: '#fff',
-    justifyContent: 'center',
+    justifyContent: 'space-evenly',
     padding: 20,
   },
 });
