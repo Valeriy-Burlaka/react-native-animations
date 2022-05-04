@@ -9,7 +9,9 @@ import { ProgressCircle } from './components/ProgressCircle';
 
 const styles = StyleSheet.create({
   circleContainer: {
-    alignItems: 'center'
+    alignItems: 'center',
+    flexDirection: 'row',
+    justifyContent: 'space-evenly',
   },
   container: {
     backgroundColor: palette.white,
@@ -37,7 +39,11 @@ export default function App() {
       <ProgressBar height={20} progressPercent={progress} />
 
       <View style={styles.circleContainer}>
-        <ProgressCircle width={180} thickness={20} progress={progress} />
+        <ProgressCircle size={140} thickness={20} progressPercent={progress} color="tomato" />
+      </View>
+      <View style={styles.circleContainer}>
+        <ProgressCircle size={100} thickness={15} progressPercent={progress} color="gold"/>
+        <ProgressCircle size={75} thickness={10} progressPercent={progress} />
       </View>
       
     </View>
