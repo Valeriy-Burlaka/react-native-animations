@@ -39,11 +39,29 @@ export default function App() {
       <ProgressBar height={20} progressPercent={progress} />
 
       <View style={styles.circleContainer}>
-        <ProgressCircle size={140} thickness={20} progressPercent={progress} color="tomato" />
+        <ProgressCircle
+          size={140}
+          thickness={20}
+          progressPercent={progress}
+          color="tomato"
+          displayProgressValue={true}
+        />
       </View>
       <View style={styles.circleContainer}>
-        <ProgressCircle size={100} thickness={15} progressPercent={progress} color="gold"/>
-        <ProgressCircle size={75} thickness={10} progressPercent={progress} />
+        <ProgressCircle
+          size={100}
+          thickness={15}
+          progressPercent={progress}
+          color="gold"
+          displayProgressValue={true}
+        />
+        <ProgressCircle size={50} thickness={5} progressPercent={progress} color="skyblue" />
+        <ProgressCircle
+          size={75}
+          thickness={10}
+          progressPercent={progress}
+          displayProgressValue={true}
+        />
       </View>
       
     </View>
