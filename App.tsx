@@ -7,6 +7,18 @@ import { palette } from './styles'
 import { ProgressBar } from './components/ProgressBar';
 import { ProgressCircle } from './components/ProgressCircle';
 
+const styles = StyleSheet.create({
+  circleContainer: {
+    alignItems: 'center'
+  },
+  container: {
+    backgroundColor: palette.white,
+    flex: 1,
+    justifyContent: 'space-evenly',
+    padding: 20,
+  },
+});
+
 export default function App() {
   const progress = useSharedValue(0);
 
@@ -22,7 +34,7 @@ export default function App() {
   return (
     <View style={styles.container}>
       <StatusBar hidden />
-      <ProgressBar height={20} progress={progress} />
+      <ProgressBar height={20} progressPercent={progress} />
 
       <View style={styles.circleContainer}>
         <ProgressCircle width={180} thickness={20} progress={progress} />
@@ -31,15 +43,3 @@ export default function App() {
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  circleContainer: {
-    alignItems: 'center'
-  },
-  container: {
-    backgroundColor: palette.white,
-    flex: 1,
-    justifyContent: 'space-evenly',
-    padding: 20,
-  },
-});
