@@ -4,6 +4,7 @@ import { StyleSheet, View } from 'react-native';
 import { useSharedValue } from 'react-native-reanimated';
 
 import { palette } from './styles'
+import { NavigationMenu } from './components/NavigationMenu';
 import { ProgressBar } from './components/ProgressBar';
 import { ProgressCircle } from './components/ProgressCircle';
 
@@ -16,8 +17,8 @@ const styles = StyleSheet.create({
   container: {
     backgroundColor: palette.white,
     flex: 1,
-    justifyContent: 'space-evenly',
-    padding: 20,
+    // justifyContent: 'space-evenly',
+    // padding: 20,
   },
 });
 
@@ -36,7 +37,8 @@ export default function App() {
   return (
     <View style={styles.container}>
       <StatusBar hidden />
-      <ProgressBar height={20} progressPercent={progress} />
+
+      {/* <ProgressBar height={20} progressPercent={progress} />
 
       <View style={styles.circleContainer}>
         <ProgressCircle
@@ -62,7 +64,9 @@ export default function App() {
           progressPercent={progress}
           displayProgressValue={true}
         />
-      </View>
+      </View> */}
+
+      <NavigationMenu />
       
     </View>
   );
