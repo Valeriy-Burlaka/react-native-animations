@@ -4,8 +4,6 @@ import styled from '@emotion/native';
 import { Text, TextStyle, TouchableOpacity, View, StyleSheet, Dimensions } from 'react-native';
 import { AntDesign } from '@expo/vector-icons';
 import Animated, {
-  interpolate,
-  Extrapolate,
   useAnimatedProps,
   useAnimatedStyle,
   useSharedValue,
@@ -68,17 +66,16 @@ const StyledIcon = styled(AntDesign)`
   right: 20px;
 `;
 
+const AnimatedIcon = Animated.createAnimatedComponent(StyledIcon);
 const OpenMenuButton = ({ onPress, X }: { onPress: () => void; X: SharedValue<number> }) => {
-  const AnimatedIcon = Animated.createAnimatedComponent(StyledIcon);
-
-  const styles = useAnimatedStyle(() => {
+  const animatedStyles = useAnimatedStyle(() => {
     return {
       transform: [
         {
-          translateX: interpolate(X.value, [0, width], [0, +width], Extrapolate.CLAMP)
+          translateX: X.value,
         }
       ]
-    };
+    }
   });
 
   return (
@@ -87,7 +84,7 @@ const OpenMenuButton = ({ onPress, X }: { onPress: () => void; X: SharedValue<nu
       size={34}
       color="#222"
       onPress={onPress}
-      style={styles}
+      style={animatedStyles}
     />
   )
 };
@@ -127,7 +124,7 @@ const CustomDrawer = () => {
     Y.value = withTiming(toCoords.y, { duration: transitionTime });
   };
 
-  const onCloseDrawer = () => {
+  const onCloseNavMenu = () => {
     X.value = withTiming(fromCoords.x, { duration: transitionTime });
     Y.value = withTiming(fromCoords.y, { duration: transitionTime });
   };
@@ -148,7 +145,7 @@ const CustomDrawer = () => {
         }
       >
         <View style={styles.menuContainer}>
-          <CloseMenuButton onPress={onCloseDrawer} />
+          <CloseMenuButton onPress={onCloseNavMenu} />
           <View style={styles.menu}>
             <View>
               {routes.map((route, index) => {
