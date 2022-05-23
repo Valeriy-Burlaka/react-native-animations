@@ -21,10 +21,9 @@ const routes = [
   'Infinite Loaders',
 ];
 
-// https://www.w3schools.com/colors/colors_trends.asp
 const colors = [
-  '#FF6F61',  // "Living coral"
-  '#88B04B',  // "Greenery"
+  palette["livingCoral"],
+  palette["greenery"],
 ];
 
 const styles = StyleSheet.create({
