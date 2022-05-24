@@ -8,6 +8,8 @@ import { NavigationMenu } from './components/NavigationMenu';
 import { ProgressBar } from './components/ProgressBar';
 import { ProgressCircle } from './components/ProgressCircle';
 
+import Navigation from './Navigation';
+
 const styles = StyleSheet.create({
   circleContainer: {
     alignItems: 'center',
@@ -33,6 +35,8 @@ export default function App() {
     return () => clearInterval(progressUpdateInterval);
 
   }, []);
+
+  return <Navigation />;
 
   return (
     <View style={styles.container}>

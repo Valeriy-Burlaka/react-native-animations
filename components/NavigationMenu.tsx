@@ -4,11 +4,11 @@ import styled from '@emotion/native';
 import { Text, TextStyle, TouchableOpacity, View, StyleSheet, Dimensions } from 'react-native';
 import { AntDesign } from '@expo/vector-icons';
 import Animated, {
+  SharedValue,
   useAnimatedProps,
   useAnimatedStyle,
   useSharedValue,
   withTiming,
-  SharedValue,
 } from 'react-native-reanimated';
 import Svg, { Polygon } from 'react-native-svg';
 
