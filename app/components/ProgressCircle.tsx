@@ -4,7 +4,7 @@ import styled from '@emotion/native';
 import Svg, { Circle, G } from 'react-native-svg';
 import Animated, { SharedValue, useAnimatedProps } from 'react-native-reanimated';
 
-import { palette } from '../styles';
+import { palette } from 'styles';
 
 interface Props {
   progressPercent: SharedValue<number>;

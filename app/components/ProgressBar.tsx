@@ -1,9 +1,10 @@
 import React from 'react';
 import { View } from 'react-native';
 import styled from '@emotion/native';
-import Animated, { SharedValue, useAnimatedStyle } from 'react-native-reanimated';
+import Animated, { useAnimatedStyle } from 'react-native-reanimated';
+import type { SharedValue } from 'react-native-reanimated';
 
-import { palette } from '../styles';
+import { palette } from 'styles';
 
 interface Props {
   progressColor?: string;

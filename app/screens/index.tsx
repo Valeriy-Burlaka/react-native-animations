@@ -3,8 +3,8 @@ import { SafeAreaView, Text } from 'react-native';
 import type { DrawerScreenProps } from '@react-navigation/drawer';
 import { AntDesign } from '@expo/vector-icons';
 
-import { DrawerStackParamList } from '../Navigation';
-import { palette } from '../styles';
+import { DrawerStackParamList } from 'components/Navigation/types';
+import { palette } from 'styles';
 
 type ScreenProps = {
   label: string;

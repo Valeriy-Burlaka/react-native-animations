@@ -4,15 +4,20 @@ import styled from '@emotion/native';
 import { Text, TextStyle, TouchableOpacity, View, StyleSheet, Dimensions } from 'react-native';
 import { AntDesign } from '@expo/vector-icons';
 import Animated, {
-  SharedValue,
   useAnimatedProps,
   useAnimatedStyle,
   useSharedValue,
   withTiming,
 } from 'react-native-reanimated';
+import type { SharedValue } from 'react-native-reanimated';
 import Svg, { Polygon } from 'react-native-svg';
 
-import { palette } from '../styles';
+import type { DrawerNavigationState } from '@react-navigation/native';
+import type { DrawerScreenProps } from '@react-navigation/drawer';
+
+import { DrawerStackParamList } from 'components/Navigation/types';
+
+import { palette } from 'styles';
 
 const { width, height } = Dimensions.get('screen');
 
@@ -101,7 +106,13 @@ const CloseMenuButton = ({ onPress }: { onPress: () => void }) => {
 
 const AnimatedPolygon = Animated.createAnimatedComponent(Polygon);
 
-const CustomDrawer = () => {
+interface DrawerProps {
+  navigation
+  routes
+  selectedRoute
+}
+
+export default function CustomDrawer() {
   const onPressRoute = (routeName: string) => {
     console.log(`Pressed route "${routeName}"`);
   };
@@ -166,8 +177,8 @@ const CustomDrawer = () => {
   );
 };
 
-export const NavigationMenu = () => {
-  return (
-    <CustomDrawer />
-  );
-};
+// export const NavigationMenu = () => {
+//   return (
+//     <CustomDrawer />
+//   );
+// };
