@@ -6,6 +6,8 @@
     // https://devblogs.microsoft.com/typescript/typescript-and-babel-7/
     // It is however needed to enable module inspection and links in VSCode.
     "baseUrl": "./app",
+    // Don't emit; allow Babel to transform files.
+    "noEmit": true,
     "strict": true,
     "target": "esnext",
     "lib": ["esnext"],
