@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import MaskedView from '@react-native-masked-view/masked-view';
 import styled from '@emotion/native';
 import { Text, TextStyle, TouchableOpacity, View, StyleSheet, Dimensions } from 'react-native';
@@ -13,18 +13,14 @@ import type { SharedValue } from 'react-native-reanimated';
 import Svg, { Polygon } from 'react-native-svg';
 
 import type { DrawerNavigationState } from '@react-navigation/native';
-import type { DrawerScreenProps } from '@react-navigation/drawer';
+import { DrawerScreenProps, useDrawerStatus } from '@react-navigation/drawer';
+import { DrawerNavigationHelpers } from '@react-navigation/drawer/lib/typescript/src/types';
 
 import { DrawerStackParamList } from 'components/Navigation/types';
 
 import { palette } from 'styles';
 
 const { width, height } = Dimensions.get('screen');
-
-const routes = [
-  'Progress Loaders',
-  'Infinite Loaders',
-];
 
 const colors = [
   palette["livingCoral"],
@@ -41,7 +37,7 @@ const styles = StyleSheet.create({
     // justifyContent: 'space-between',
   },
   menuContainer: {
-    alignItems: 'flex-start',
+    // alignItems: 'flex-start',
     backgroundColor: palette.grey80,
     flex: 1,
     paddingBottom: 30,
@@ -70,28 +66,28 @@ const StyledIcon = styled(AntDesign)`
   right: 20px;
 `;
 
-const AnimatedIcon = Animated.createAnimatedComponent(StyledIcon);
-const OpenMenuButton = ({ onPress, X }: { onPress: () => void; X: SharedValue<number> }) => {
-  const animatedStyles = useAnimatedStyle(() => {
-    return {
-      transform: [
-        {
-          translateX: X.value,
-        }
-      ]
-    }
-  });
+// const AnimatedIcon = Animated.createAnimatedComponent(StyledIcon);
+// const OpenMenuButton = ({ onPress, X }: { onPress: () => void; X: SharedValue<number> }) => {
+//   const animatedStyles = useAnimatedStyle(() => {
+//     return {
+//       transform: [
+//         {
+//           translateX: X.value,
+//         }
+//       ]
+//     }
+//   });
 
-  return (
-    <AnimatedIcon
-      name="menufold"
-      size={34}
-      color="#222"
-      onPress={onPress}
-      style={animatedStyles}
-    />
-  )
-};
+//   return (
+//     <AnimatedIcon
+//       name="menufold"
+//       size={34}
+//       color="#222"
+//       onPress={onPress}
+//       style={animatedStyles}
+//     />
+//   )
+// };
 
 const CloseMenuButton = ({ onPress }: { onPress: () => void }) => {
   return (
@@ -107,19 +103,37 @@ const CloseMenuButton = ({ onPress }: { onPress: () => void }) => {
 const AnimatedPolygon = Animated.createAnimatedComponent(Polygon);
 
 interface DrawerProps {
-  navigation
-  routes
-  selectedRoute
+  // navigation: DrawerScreenProps<DrawerStackParamList, keyof DrawerStackParamList>;
+  navigation: DrawerNavigationHelpers;
+  routes: string[];
+  selectedRoute: string;
 }
 
-export default function CustomDrawer() {
-  const onPressRoute = (routeName: string) => {
-    console.log(`Pressed route "${routeName}"`);
+export default function CustomDrawer({ navigation, routes, selectedRoute }: DrawerProps) {
+  const drawerStatus = useDrawerStatus();
+
+  const transitionTime = 500;
+  const onDrawerOpen = () => {
+    X.value = withTiming(toCoords.x, { duration: transitionTime });
+    Y.value = withTiming(toCoords.y, { duration: transitionTime });
   };
-  
+  const onDrawerClose = () => {
+    X.value = withTiming(fromCoords.x, { duration: transitionTime });
+    Y.value = withTiming(fromCoords.y, { duration: transitionTime });
+    navigation.closeDrawer();
+  };
+
+  useEffect(() => {
+    if (drawerStatus === 'open') {
+      onDrawerOpen();
+    } else {
+      onDrawerClose();
+    }
+  }, [drawerStatus]);
+
   const fromCoords = { x: 0, y: height };
+  // FIXME: this accounts for a screen width but we now display the Drawer in the "drawer width"
   const toCoords = { x: width, y: 0 };
-  const transitionTime = 750;
   const X = useSharedValue(fromCoords.x);
   const Y = useSharedValue(fromCoords.y);
 
@@ -129,14 +143,11 @@ export default function CustomDrawer() {
     };
   });
 
-  const onOpenNavMenu = () => {
-    X.value = withTiming(toCoords.x, { duration: transitionTime });
-    Y.value = withTiming(toCoords.y, { duration: transitionTime });
-  };
+  console.log('Selected route:', selectedRoute);
 
-  const onCloseNavMenu = () => {
-    X.value = withTiming(fromCoords.x, { duration: transitionTime });
-    Y.value = withTiming(fromCoords.y, { duration: transitionTime });
+  const onPressRoute = (routeName: string) => {
+    console.log(`Pressed route "${routeName}"`);
+    navigation.navigate(routeName);
   };
 
   return (
@@ -150,12 +161,13 @@ export default function CustomDrawer() {
             viewBox={`0 0 ${width} ${height}`}
             style={{ backgroundColor: 'transparent' }}
           >
+            {/* The 'fill' is whatever unless it's 'transparent'. It is 'white anyway */}
             <AnimatedPolygon fill="green" animatedProps={polygonProps} />
           </Svg>
         }
       >
         <View style={styles.menuContainer}>
-          <CloseMenuButton onPress={onCloseNavMenu} />
+          <CloseMenuButton onPress={onDrawerClose} />
           <View style={styles.menu}>
             <View>
               {routes.map((route, index) => {
@@ -172,7 +184,7 @@ export default function CustomDrawer() {
           </View>
         </View>
       </MaskedView>
-      <OpenMenuButton onPress={onOpenNavMenu} X={X} />
+      {/* <OpenMenuButton onPress={onDrawerOpen} X={X} /> */}
     </>
   );
 };
