@@ -44,7 +44,7 @@ function OpenDrawerButton({ navigation }: DrawerScreenProps<DrawerStackParamList
 export function GetStartedScreen({ navigation, route }: DrawerScreenProps<DrawerStackParamList, 'GetStarted'>) {
   return (
     <Screen
-      backgroundColor={palette['grey10']}
+      backgroundColor={palette['livingCoral']}
       label={'Get Started'}
       navigation={navigation}
       route={route}
@@ -66,7 +66,7 @@ export function ProgressBarScreen({ navigation, route }: DrawerScreenProps<Drawe
 export function LoadersScreen({ navigation, route }: DrawerScreenProps<DrawerStackParamList, 'Loaders'>) {
   return (
     <Screen
-      backgroundColor={palette['livingCoral']}
+      backgroundColor={palette['grey10']}
       label={'Loaders'}
       navigation={navigation}
       route={route}

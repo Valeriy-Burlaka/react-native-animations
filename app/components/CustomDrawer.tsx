@@ -23,8 +23,9 @@ import { palette } from 'styles';
 const { width, height } = Dimensions.get('screen');
 
 const colors = [
-  palette["livingCoral"],
-  palette["greenery"],
+  palette['livingCoral'],
+  palette['greenery'],
+  palette['white'],
 ];
 
 const styles = StyleSheet.create({
@@ -188,9 +189,3 @@ export default function CustomDrawer({ navigation, routes, selectedRoute }: Draw
     </>
   );
 };
-
-// export const NavigationMenu = () => {
-//   return (
-//     <CustomDrawer />
-//   );
-// };
