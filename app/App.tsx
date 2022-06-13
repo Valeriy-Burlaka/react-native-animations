@@ -1,7 +1,6 @@
 import { registerRootComponent } from 'expo';
 
-import React, { useEffect } from 'react';
-import { StatusBar } from 'expo-status-bar';
+import React from 'react';
 
 import Navigation from 'components/Navigation';
 

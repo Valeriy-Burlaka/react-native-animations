@@ -1,9 +1,12 @@
 import React, { useEffect } from 'react';
 import { StyleSheet, View } from 'react-native';
+import { StatusBar } from 'expo-status-bar';
 import { useSharedValue } from 'react-native-reanimated';
+import type { DrawerScreenProps } from '@react-navigation/drawer';
 
 import { palette } from 'styles';
-
+import { DrawerStackParamList } from 'components/Navigation/types';
+import { OpenDrawerButton } from 'components/Navigation/OpenDrawerButton';
 import { ProgressBar } from 'components/ProgressBar';
 import { ProgressCircle } from 'components/ProgressCircle';
 
@@ -21,7 +24,7 @@ const styles = StyleSheet.create({
   },
 });
 
-export function ProgressBarsScreen () {
+export function ProgressBarsScreen ({ navigation, route }: DrawerScreenProps<DrawerStackParamList, 'ProgressBar'>) {
   const progress = useSharedValue(0);
 
   useEffect(() => {
@@ -36,6 +39,8 @@ export function ProgressBarsScreen () {
   return (
     <View style={styles.container}>
       {/* <StatusBar hidden /> */}
+
+      <OpenDrawerButton navigation={navigation} route={route} />
 
       <ProgressBar height={20} progressPercent={progress} />
 
