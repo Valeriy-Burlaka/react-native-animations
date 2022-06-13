@@ -1,11 +1,11 @@
 import * as React from 'react';
-import { Dimensions } from 'react-native';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import type { DrawerContentComponentProps } from '@react-navigation/drawer';
 import { NavigationContainer } from '@react-navigation/native';
 import { DrawerNavigationHelpers } from '@react-navigation/drawer/lib/typescript/src/types';
 
 import CustomerDrawer from 'components/CustomDrawer';
+import { ProgressBarsScreen } from 'screens/ProgressBars';
 
 import {
   GetStartedScreen,
@@ -13,7 +13,6 @@ import {
   LoadersScreen,
 } from 'screens';
 
-const { width } = Dimensions.get('screen');
 const Drawer = createDrawerNavigator();
 
 export default function Navigation() {
@@ -27,8 +26,10 @@ export default function Navigation() {
           drawerStyle: {
             backgroundColor: 'transparent',
             width: '100%',
+            // width: '50%',
           },
           drawerType: 'front',
+          // drawerType: 'permanent',
           // overlayColor: 'transparent',
         }}
         drawerContent={(props: DrawerContentComponentProps) => {
@@ -42,7 +43,8 @@ export default function Navigation() {
         }}
       >
         <Drawer.Screen name="GetStarted" component={GetStartedScreen} />
-        <Drawer.Screen name="ProgressBar" component={ProgressBarScreen} />
+        {/* <Drawer.Screen name="ProgressBars" component={ProgressBarScreen} /> */}
+        <Drawer.Screen name="ProgressBars" component={ProgressBarsScreen} />
         <Drawer.Screen name="Loaders" component={LoadersScreen} />
       </Drawer.Navigator>
     </NavigationContainer>

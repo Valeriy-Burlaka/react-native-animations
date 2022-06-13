@@ -162,7 +162,7 @@ export default function CustomDrawer({ navigation, routes, selectedRoute }: Draw
             viewBox={`0 0 ${width} ${height}`}
             style={{ backgroundColor: 'transparent' }}
           >
-            {/* The 'fill' is whatever unless it's 'transparent'. It is 'white anyway */}
+            {/* The 'fill' is whatever unless it's 'transparent'. It is white anyway */}
             <AnimatedPolygon fill="green" animatedProps={polygonProps} />
           </Svg>
         }
