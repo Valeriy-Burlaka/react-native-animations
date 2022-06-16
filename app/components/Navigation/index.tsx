@@ -5,13 +5,10 @@ import { NavigationContainer } from '@react-navigation/native';
 import { DrawerNavigationHelpers } from '@react-navigation/drawer/lib/typescript/src/types';
 
 import CustomerDrawer from 'components/CustomDrawer';
+import { SimpleLoadersScreen } from 'screens/SimpleLoaders';
 import { ProgressBarsScreen } from 'screens/ProgressBars';
 
-import {
-  GetStartedScreen,
-  ProgressBarScreen,
-  LoadersScreen,
-} from 'screens';
+import { GetStartedScreen } from 'screens';
 
 const Drawer = createDrawerNavigator();
 
@@ -43,9 +40,8 @@ export default function Navigation() {
         }}
       >
         <Drawer.Screen name="GetStarted" component={GetStartedScreen} />
-        {/* <Drawer.Screen name="ProgressBars" component={ProgressBarScreen} /> */}
         <Drawer.Screen name="ProgressBars" component={ProgressBarsScreen} />
-        <Drawer.Screen name="Loaders" component={LoadersScreen} />
+        <Drawer.Screen name="Loaders" component={SimpleLoadersScreen} />
       </Drawer.Navigator>
     </NavigationContainer>
   )
