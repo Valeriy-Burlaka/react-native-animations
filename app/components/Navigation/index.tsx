@@ -16,7 +16,7 @@ export default function Navigation() {
   return (
     <NavigationContainer>
       <Drawer.Navigator
-        initialRouteName="GetStarted"
+        initialRouteName="Loaders"
         
         screenOptions={{
           headerShown: false,

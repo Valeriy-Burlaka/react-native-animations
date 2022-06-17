@@ -1,6 +1,12 @@
 import React from 'react';
 import { View } from 'react-native';
-import Animated, { useAnimatedProps, withRepeat, withTiming } from 'react-native-reanimated';
+import Animated, {
+  Easing,
+  useAnimatedProps,
+  useSharedValue,
+  withRepeat,
+  withTiming,
+} from 'react-native-reanimated';
 import Svg, { Circle, G } from 'react-native-svg';
 
 import { palette } from 'styles';
@@ -22,14 +28,22 @@ export function SimpleRotation ({
   const radius = (size - strokeWidth) / 2;
   const circumference = radius * 2 * Math.PI;
 
+  const dashOffset = useSharedValue(0);
+
+  dashOffset.value = withRepeat(
+    withTiming(
+      -circumference,
+      {
+        duration: 1200,
+        easing: Easing.linear,
+      },
+    ),
+    -1,
+  )
+
   const animatedProps = useAnimatedProps(() => {
     return {
-      strokeDashoffset: withRepeat(
-        withTiming(-circumference / 2, {
-          duration: 1000,
-        }),
-        -1,
-      ),
+      strokeDashoffset: dashOffset.value,
     };
   });
 
@@ -53,10 +67,7 @@ export function SimpleRotation ({
             fill="none"
             stroke={color}
             strokeWidth={strokeWidth}
-            // strokeDasharray={circumference * 0.1}
             strokeDasharray={`${circumference * 0.25} ${circumference * 0.75}`}
-            // strokeDashoffset={circumference * 0.75}
-            // strokeDashoffset={0}
             animatedProps={animatedProps}
           />
         </G>
