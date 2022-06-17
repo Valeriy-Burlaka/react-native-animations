@@ -7,7 +7,7 @@ import { palette } from 'styles';
 import { DrawerStackParamList } from 'components/Navigation/types';
 import { OpenDrawerButton } from 'components/Navigation/OpenDrawerButton';
 
-import { SimpleRotation } from './components/SimpleRotation';
+import { SimpleRotatingLoader } from './components/SimpleRotatingLoader';
 
 const styles = StyleSheet.create({
   circleContainer: {
@@ -40,9 +40,9 @@ export function SimpleLoadersScreen ({ navigation, route }: DrawerScreenProps<Dr
       <OpenDrawerButton navigation={navigation} route={route} />
 
       <View style={styles.circleContainer}>
-        <SimpleRotation />
+        <SimpleRotatingLoader />
 
-        <SimpleRotation
+        <SimpleRotatingLoader
           color={palette.ultraViolet}
           trackColor={palette.grey50}
           size={80}
@@ -50,7 +50,7 @@ export function SimpleLoadersScreen ({ navigation, route }: DrawerScreenProps<Dr
           speed={2}
         />
 
-        <SimpleRotation
+        <SimpleRotatingLoader
           color={palette.livingCoral}
           trackColor={palette.livingCoral}
           size={40}

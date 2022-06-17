@@ -21,7 +21,7 @@ interface Props {
 
 const AnimatedCircle = Animated.createAnimatedComponent(Circle);
 
-export function SimpleRotation ({
+export function SimpleRotatingLoader ({
   color = palette.greenery,
   trackColor = palette.greenery,
   size = 120,
