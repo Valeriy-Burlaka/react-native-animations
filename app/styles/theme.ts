@@ -6,6 +6,7 @@ export const palette = {
   black: '#000',
   white: '#FFF',
   // https://www.w3schools.com/colors/colors_trends.asp
-  livingCoral: '#FF6F61',
   greenery: '#88B04B',
+  livingCoral: '#FF6F61',
+  ultraViolet: '#6B5B95',
 };

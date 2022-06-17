@@ -41,6 +41,22 @@ export function SimpleLoadersScreen ({ navigation, route }: DrawerScreenProps<Dr
 
       <View style={styles.circleContainer}>
         <SimpleRotation />
+
+        <SimpleRotation
+          color={palette.ultraViolet}
+          trackColor={palette.grey50}
+          size={80}
+          thickness={8}
+          speed={2}
+        />
+
+        <SimpleRotation
+          color={palette.livingCoral}
+          trackColor={palette.livingCoral}
+          size={40}
+          thickness={4}
+          speed={3}
+        />
       </View>
     </View>
   );

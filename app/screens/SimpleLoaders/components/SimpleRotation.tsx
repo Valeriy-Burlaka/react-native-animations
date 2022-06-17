@@ -13,28 +13,33 @@ import { palette } from 'styles';
 
 interface Props {
   color?: string;
+  trackColor?: string;
   size?: number;
   thickness?: number;
+  speed?: 1 | 2 | 3;
 }
 
 const AnimatedCircle = Animated.createAnimatedComponent(Circle);
 
 export function SimpleRotation ({
   color = palette.greenery,
+  trackColor = palette.greenery,
   size = 120,
-  thickness = 10
+  thickness = 10,
+  speed = 1,
 }: Props) {
   const strokeWidth = thickness;
   const radius = (size - strokeWidth) / 2;
   const circumference = radius * 2 * Math.PI;
 
   const dashOffset = useSharedValue(0);
+  const baseAnimationDuration = 1200;
 
   dashOffset.value = withRepeat(
     withTiming(
       -circumference,
       {
-        duration: 1200,
+        duration: baseAnimationDuration / speed,
         easing: Easing.linear,
       },
     ),
@@ -56,7 +61,7 @@ export function SimpleRotation ({
             cy={size / 2}
             r={radius}
             fill="none"
-            stroke={color}
+            stroke={trackColor}
             strokeWidth={strokeWidth}
             strokeOpacity={0.2}
           />
