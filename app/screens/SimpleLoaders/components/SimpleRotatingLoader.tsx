@@ -35,16 +35,18 @@ export function SimpleRotatingLoader ({
   const dashOffset = useSharedValue(0);
   const baseAnimationDuration = 1200;
 
-  dashOffset.value = withRepeat(
-    withTiming(
-      -circumference,
-      {
-        duration: baseAnimationDuration / speed,
-        easing: Easing.linear,
-      },
-    ),
-    -1,
-  )
+  React.useEffect(() => {
+    dashOffset.value = withRepeat(
+      withTiming(
+        -circumference,
+        {
+          duration: baseAnimationDuration / speed,
+          easing: Easing.linear,
+        },
+      ),
+      -1,
+    );
+  }, []);
 
   const animatedProps = useAnimatedProps(() => {
     return {
