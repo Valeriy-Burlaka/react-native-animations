@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { Button, View } from 'react-native';
-import Animated, { useSharedValue, useDerivedValue, useAnimatedProps, interpolate, withTiming, withRepeat, Easing, useAnimatedStyle } from 'react-native-reanimated';
+import Animated, { useSharedValue, useDerivedValue, useAnimatedProps, interpolate, withTiming, withRepeat, withSequence, Easing, Extrapolate, useAnimatedStyle } from 'react-native-reanimated';
 import Svg, { Circle, G } from 'react-native-svg';
 
 import { palette } from 'styles';
@@ -30,23 +30,90 @@ export function SpringLoader ({
 
   const animationProgress = useSharedValue(0);
 
+  const animationProgressInputRange = [
+    0,
+    0.1,
+    0.2,
+    0.3,
+    0.4,
+    0.5,
+    0.6,
+    0.7,
+    0.8,
+    0.9,
+    1.0,
+  ];
 
-  const dashOffsetStroke = useSharedValue(0);
+  const dashArrayStrokeOutputRange = [
+    0.05,
+    0.1,
+    0.175,
+    0.25,
+    // 0.35,
+    0.4,
+    0.525,
+    0.6,  // <-- breakpoint
+  //   // 0.599,
+    0.5,
+    0.4,
+    0.1,
+    0.05,
+  ].map(value => value * circumference);
 
-  useEffect(() => {
-    dashOffsetStroke.value = withRepeat(withTiming(
-      circumference,
-      {
-        duration: baseAnimationDuration,
-      },
-    ), -1);
-  }, [dashOffsetStroke]);
+  const dashOffsetOutputRange = [
+    0,
+    0.05,
+    0.1,
+    0.15,
+  //   0.175,
+    0.2,
+    0.325,
+    0.35,  // <--
+    // 0.4,
+    0.5,
+    0.6,
+    0.9,
+    1,
+  ].map(value => value * -circumference);
+
+  const dashArrayStroke = useDerivedValue(() => {
+    return interpolate(
+      animationProgress.value,
+      animationProgressInputRange,
+      dashArrayStrokeOutputRange,
+      Extrapolate.CLAMP,
+    );
+  });
+  const dashArrayGap = useDerivedValue(() => {
+    return circumference - dashArrayStroke.value;
+  });
+  const dashOffset = useDerivedValue(() => {
+    return interpolate(
+      animationProgress.value,
+      animationProgressInputRange,
+      dashOffsetOutputRange,
+      Extrapolate.CLAMP,
+    );
+  });
 
   const animatedProps = useAnimatedProps(() => {
     return {
-      strokeDasharray: [dashOffsetStroke.value, circumference - dashOffsetStroke.value],
-    }
+      strokeDasharray: [dashArrayStroke.value, dashArrayGap.value],
+      strokeDashoffset: dashOffset.value,
+    };
   });
+
+  useEffect(() => {
+    animationProgress.value = withRepeat(
+      withTiming(
+        1,
+        {
+          duration: baseAnimationDuration,
+        }
+      ),
+      -1,
+    );
+  }, [animationProgress]);
 
   return (
     <View>
@@ -68,32 +135,15 @@ export function SpringLoader ({
             fill="none"
             stroke={color}
             strokeWidth={strokeWidth}
-            strokeLinecap="round"
-            // strokeDasharray={'30 -1'}
-            // strokeDasharray={[circumference * 0.21, circumference - (circumference * 0.21)]}
+            // strokeLinecap="round"
+            // strokeDasharray={[NaN, 0]}
+            // strokeDasharray={[circumference * 0.01, circumference - (circumference * 0.01)]}
+            // strokeDashoffset={-circumference * 0.99}
             // strokeDasharray={`${circumference * 0.05} ${circumference * (1 - 0.05)}`}
-            // strokeDashoffset={-circumference * 0.75}
             animatedProps={animatedProps}
           />
         </G>
       </Svg>
     </View>
   );
-  // const width = useSharedValue(50);
-
-  // const style = useAnimatedStyle(() => {
-  //   return {
-  //     width: withTiming(width.value, {
-  //       duration: 500,
-  //       easing: Easing.bezier(0.25, 0.1, 0.25, 1),
-  //     }),
-  //   };
-  // });
-
-  // return (
-  //   <View>
-  //     <Animated.View style={[{ borderColor: palette.livingCoral, borderWidth: 3 },  style]} />
-  //     <Button onPress={() => (width.value = Math.random() * 300)} title="Hey" />
-  //   </View>
-  // );
 }
