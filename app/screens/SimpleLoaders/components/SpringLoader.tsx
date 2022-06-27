@@ -1,6 +1,14 @@
 import React, { useEffect } from 'react';
-import { Button, View } from 'react-native';
-import Animated, { useSharedValue, useDerivedValue, useAnimatedProps, interpolate, withTiming, withRepeat, withSequence, Easing, Extrapolate, useAnimatedStyle } from 'react-native-reanimated';
+import { View } from 'react-native';
+import Animated, {
+  Extrapolate,
+  interpolate,
+  useAnimatedProps,
+  useDerivedValue,
+  useSharedValue,
+  withRepeat,
+  withSpring,
+} from 'react-native-reanimated';
 import Svg, { Circle, G } from 'react-native-svg';
 
 import { palette } from 'styles';
@@ -10,7 +18,6 @@ interface Props {
   trackColor?: string;
   size?: number;
   thickness?: number;
-  speed?: 1 | 2 | 3;
 }
 
 const AnimatedCircle = Animated.createAnimatedComponent(Circle);
@@ -20,13 +27,10 @@ export function SpringLoader ({
   trackColor = palette.greenery,
   size = 120,
   thickness = 10,
-  speed = 1,
 }: Props) {
   const strokeWidth = thickness;
   const radius = (size - strokeWidth) / 2;
   const circumference = radius * 2 * Math.PI;
-
-  const baseAnimationDuration = 2400;
 
   const animationProgress = useSharedValue(0);
 
@@ -49,15 +53,13 @@ export function SpringLoader ({
     0.1,
     0.175,
     0.25,
-    // 0.35,
     0.4,
     0.525,
     0.6,  // <-- breakpoint
-  //   // 0.599,
     0.5,
     0.4,
     0.1,
-    0.05,
+    0.001,
   ].map(value => value * circumference);
 
   const dashOffsetOutputRange = [
@@ -65,11 +67,9 @@ export function SpringLoader ({
     0.05,
     0.1,
     0.15,
-  //   0.175,
     0.2,
     0.325,
     0.35,  // <--
-    // 0.4,
     0.5,
     0.6,
     0.9,
@@ -105,10 +105,12 @@ export function SpringLoader ({
 
   useEffect(() => {
     animationProgress.value = withRepeat(
-      withTiming(
+      withSpring(
         1,
         {
-          duration: baseAnimationDuration,
+          stiffness: 25,
+          damping: 100,
+          mass: 1.5,
         }
       ),
       -1,
@@ -135,11 +137,7 @@ export function SpringLoader ({
             fill="none"
             stroke={color}
             strokeWidth={strokeWidth}
-            // strokeLinecap="round"
-            // strokeDasharray={[NaN, 0]}
-            // strokeDasharray={[circumference * 0.01, circumference - (circumference * 0.01)]}
-            // strokeDashoffset={-circumference * 0.99}
-            // strokeDasharray={`${circumference * 0.05} ${circumference * (1 - 0.05)}`}
+            strokeLinecap="round"
             animatedProps={animatedProps}
           />
         </G>
