@@ -1,8 +1,9 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { View } from 'react-native';
 import Animated, {
   Extrapolate,
   interpolate,
+  SharedValue,
   useAnimatedProps,
   useDerivedValue,
   useSharedValue,
@@ -10,6 +11,7 @@ import Animated, {
   withSpring,
 } from 'react-native-reanimated';
 import Svg, { Circle, G } from 'react-native-svg';
+import hexToRgba from 'hex-to-rgba';
 
 import { palette } from 'styles';
 
@@ -18,6 +20,7 @@ interface Props {
   trackColor?: string;
   size?: number;
   thickness?: number;
+  colorSequence?: string[];
 }
 
 const AnimatedCircle = Animated.createAnimatedComponent(Circle);
@@ -27,10 +30,19 @@ export function SpringLoader ({
   trackColor = palette.greenery,
   size = 120,
   thickness = 10,
+  colorSequence = [],
 }: Props) {
   const strokeWidth = thickness;
   const radius = (size - strokeWidth) / 2;
   const circumference = radius * 2 * Math.PI;
+
+  let circleColor = useSharedValue(hexToRgba(color));
+  let circleColorSequence: SharedValue<string[]>;
+  if (colorSequence.length) {
+    circleColorSequence = useSharedValue(colorSequence.map(c => hexToRgba(c)));
+    circleColor.value = circleColorSequence.value[0];
+    trackColor = palette.grey10;
+  }
 
   const animationProgress = useSharedValue(0);
 
@@ -100,6 +112,7 @@ export function SpringLoader ({
     return {
       strokeDasharray: [dashArrayStroke.value, dashArrayGap.value],
       strokeDashoffset: dashOffset.value,
+      stroke: circleColor.value,
     };
   });
 
@@ -111,6 +124,14 @@ export function SpringLoader ({
           stiffness: 25,
           damping: 100,
           mass: 1.5,
+        },
+        () => {
+          if (circleColorSequence) {
+            const _copy = [...circleColorSequence.value];
+            _copy.push(_copy.shift() as string);
+            circleColor.value = _copy[0];
+            circleColorSequence.value = _copy;
+          }
         }
       ),
       -1,
@@ -135,7 +156,6 @@ export function SpringLoader ({
             cy={size / 2}
             r={radius}
             fill="none"
-            stroke={color}
             strokeWidth={strokeWidth}
             strokeLinecap="round"
             animatedProps={animatedProps}
@@ -145,3 +165,19 @@ export function SpringLoader ({
     </View>
   );
 }
+
+export const MBankLoader = ({...props}: Props) => {
+  return (
+    <SpringLoader
+      {...props}
+      colorSequence={[
+        palette.mbankTheme.red,
+        palette.mbankTheme.black,
+        palette.mbankTheme.orange,
+        palette.mbankTheme.scarlet,
+        palette.mbankTheme.blue,
+        palette.mbankTheme.green,
+      ]}
+    />
+  )
+};

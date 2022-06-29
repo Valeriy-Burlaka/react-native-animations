@@ -8,6 +8,7 @@ import { DrawerStackParamList } from 'components/Navigation/types';
 import { OpenDrawerButton } from 'components/Navigation/OpenDrawerButton';
 
 import { SimpleRotatingLoader } from './components/SimpleRotatingLoader';
+import { SpringLoader, MBankLoader } from './components/SpringLoader';
 
 const styles = StyleSheet.create({
   circleContainer: {
@@ -40,7 +41,7 @@ export function SimpleLoadersScreen ({ navigation, route }: DrawerScreenProps<Dr
       <OpenDrawerButton navigation={navigation} route={route} />
 
       <View style={styles.circleContainer}>
-        <SimpleRotatingLoader />
+        {/* <SimpleRotatingLoader />
 
         <SimpleRotatingLoader
           color={palette.ultraViolet}
@@ -56,6 +57,23 @@ export function SimpleLoadersScreen ({ navigation, route }: DrawerScreenProps<Dr
           size={40}
           thickness={4}
           speed={3}
+        /> */}
+
+        <SpringLoader />
+
+        <SpringLoader
+          size={100}
+          thickness={8}
+          colorSequence={[
+            palette.livingCoral,
+            palette.ultraViolet,
+            palette.greenery
+          ]}
+        />
+
+        <MBankLoader
+          size={80}
+          thickness={6}
         />
       </View>
     </View>
