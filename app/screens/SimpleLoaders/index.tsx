@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { StyleSheet, View } from 'react-native';
+import styled from '@emotion/native';
 import { useSharedValue } from 'react-native-reanimated';
 import type { DrawerScreenProps } from '@react-navigation/drawer';
 
@@ -10,19 +10,17 @@ import { OpenDrawerButton } from 'components/Navigation/OpenDrawerButton';
 import { SimpleRotatingLoader } from './components/SimpleRotatingLoader';
 import { SpringLoader, MBankLoader } from './components/SpringLoader';
 
-const styles = StyleSheet.create({
-  circleContainer: {
-    alignItems: 'center',
-    flexDirection: 'row',
-    justifyContent: 'space-evenly',
-  },
-  container: {
-    backgroundColor: palette.white,
-    flex: 1,
-    justifyContent: 'space-evenly',
-    // padding: 20,
-  },
-});
+const Container = styled.View`
+  background-color: ${palette.white};
+  flex: 1;
+  justify-content: space-evenly;
+`;
+
+const VerticalBox = styled.View`
+  align-items: center;
+  flex-direction: row;
+  justify-content: space-evenly;
+`
 
 export function SimpleLoadersScreen ({ navigation, route }: DrawerScreenProps<DrawerStackParamList, 'Loaders'>) {
   const progress = useSharedValue(0);
@@ -37,11 +35,11 @@ export function SimpleLoadersScreen ({ navigation, route }: DrawerScreenProps<Dr
   }, []);
 
   return (
-    <View style={styles.container}>
+    <Container>
       <OpenDrawerButton navigation={navigation} route={route} />
 
-      <View style={styles.circleContainer}>
-        {/* <SimpleRotatingLoader />
+      <VerticalBox>
+        <SimpleRotatingLoader />
 
         <SimpleRotatingLoader
           color={palette.ultraViolet}
@@ -57,8 +55,10 @@ export function SimpleLoadersScreen ({ navigation, route }: DrawerScreenProps<Dr
           size={40}
           thickness={4}
           speed={3}
-        /> */}
+        />
+      </VerticalBox>
 
+      <VerticalBox>
         <SpringLoader />
 
         <SpringLoader
@@ -75,7 +75,8 @@ export function SimpleLoadersScreen ({ navigation, route }: DrawerScreenProps<Dr
           size={80}
           thickness={6}
         />
-      </View>
-    </View>
+      </VerticalBox>
+
+    </Container>
   );
 }
