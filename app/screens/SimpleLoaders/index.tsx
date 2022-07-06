@@ -34,10 +34,10 @@ const CardText = styled.Text<{ color: string }>`
 `;
 
 const VerticalBox = styled.View`
-  /* flex-grow: 1; */
   flex-direction: row;
   align-items: center;
   justify-content: space-evenly;
+  margin-top: 20px;
   width: 80%;
 `;
 
@@ -154,7 +154,7 @@ export function SimpleLoadersScreen ({ navigation, route }: DrawerScreenProps<Dr
             <Card backgroundColor={index === selectedCardIndex && !bgImmutable ? palette.white : bg}>
               <CardText color={color}>{category}</CardText>
               {index === selectedCardIndex && (
-                <Animated.View style={{ flexGrow: 1 }} entering={FadeIn.delay(100).springify()}>
+                <Animated.View entering={FadeIn.delay(100).springify()}>
                   {demoComponent()}
                 </Animated.View>
               )}
