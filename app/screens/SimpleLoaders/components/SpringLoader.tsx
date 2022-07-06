@@ -41,7 +41,7 @@ export function SpringLoader ({
   if (colorSequence.length) {
     circleColorSequence = useSharedValue(colorSequence.map(c => hexToRgba(c)));
     circleColor.value = circleColorSequence.value[0];
-    trackColor = palette.grey10;
+    trackColor = palette.grey20;
   }
 
   const animationProgress = useSharedValue(0);

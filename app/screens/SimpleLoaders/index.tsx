@@ -12,10 +12,7 @@ import { SimpleRotatingLoader } from './components/SimpleRotatingLoader';
 import { SpringLoader, MBankLoader } from './components/SpringLoader';
 
 const Container = styled.View`
-  background-color: ${palette.white};
   flex: 1;
-  /* justify-content: space-evenly; */
-  justify-content: center;
 `;
 
 const CardContainer = styled.TouchableOpacity`
@@ -46,6 +43,7 @@ const VerticalBox = styled.View`
 
 const CARD_PROPERTIES: Array<{
   bg: string;
+  bgImmutable?: boolean;
   color: string;
   category: string;
   demoComponent: () => React.ReactNode;
@@ -120,6 +118,7 @@ const CARD_PROPERTIES: Array<{
   },
   {
     bg: '#193B8C',
+    bgImmutable: true,
     color: '#FECBCD',
     category: 'Ripple',
     demoComponent: () => <></>,
@@ -137,11 +136,13 @@ export function SimpleLoadersScreen ({ navigation, route }: DrawerScreenProps<Dr
 
   console.log('Selected index:', selectedCardIndex);
 
+
+
   return (
     <Container>
       <StatusBar hidden />
 
-      {CARD_PROPERTIES.map(({ bg, color, category, demoComponent }, index) => {
+      {CARD_PROPERTIES.map(({ bg, bgImmutable, color, category, demoComponent }, index) => {
         return (
           <CardContainer
             activeOpacity={0.8}
@@ -150,7 +151,7 @@ export function SimpleLoadersScreen ({ navigation, route }: DrawerScreenProps<Dr
               setSelectedCardIndex(index === selectedCardIndex ? null : index);
             }}
           >
-            <Card backgroundColor={bg}>
+            <Card backgroundColor={index === selectedCardIndex && !bgImmutable ? palette.white : bg}>
               <CardText color={color}>{category}</CardText>
               {index === selectedCardIndex && (
                 <Animated.View style={{ flexGrow: 1 }} entering={FadeIn.delay(100).springify()}>
