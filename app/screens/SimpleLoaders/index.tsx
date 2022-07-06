@@ -1,6 +1,7 @@
-import React, { useEffect } from 'react';
+import React, { useState } from 'react';
+import { StatusBar } from 'react-native';
 import styled from '@emotion/native';
-import { useSharedValue } from 'react-native-reanimated';
+import Animated, { FadeIn } from 'react-native-reanimated';
 import type { DrawerScreenProps } from '@react-navigation/drawer';
 
 import { palette } from 'styles';
@@ -13,70 +14,155 @@ import { SpringLoader, MBankLoader } from './components/SpringLoader';
 const Container = styled.View`
   background-color: ${palette.white};
   flex: 1;
-  justify-content: space-evenly;
+  /* justify-content: space-evenly; */
+  justify-content: center;
+`;
+
+const CardContainer = styled.TouchableOpacity`
+  flex-grow: 1;
+`;
+
+const Card = styled.View<{ backgroundColor: string }>`
+  background-color: ${(props) => props.backgroundColor};
+  flex-grow: 1;
+  align-items: center;
+  justify-content: center;
+`;
+
+const CardText = styled.Text<{ color: string }>`
+  color: ${(props) => props.color};
+  font-size: 38px;
+  font-weight: 900;
+  text-transform: uppercase;
 `;
 
 const VerticalBox = styled.View`
-  align-items: center;
+  /* flex-grow: 1; */
   flex-direction: row;
+  align-items: center;
   justify-content: space-evenly;
-`
+  width: 80%;
+`;
+
+const CARD_PROPERTIES: Array<{
+  bg: string;
+  color: string;
+  category: string;
+  demoComponent: () => React.ReactNode;
+}> = [
+  {
+    bg: '#A8DDE9',
+    color: '#3F5B98',
+    category: 'Simple Rotation',
+    demoComponent: () => {
+      return (
+        <VerticalBox>
+          <SimpleRotatingLoader
+            size={80}
+            thickness={8}
+          />
+
+          <SimpleRotatingLoader
+            color={palette.ultraViolet}
+            trackColor={palette.grey50}
+            size={60}
+            thickness={6}
+            speed={2}
+          />
+
+          <SimpleRotatingLoader
+            color={palette.livingCoral}
+            trackColor={palette.livingCoral}
+            size={40}
+            thickness={4}
+            speed={3}
+          />
+        </VerticalBox>
+      );
+    },
+  },
+  {
+    bg: '#086E4B',
+    color: '#FCBE4A',
+    category: 'Spring Rotation',
+    demoComponent: () => {
+      return (
+        <VerticalBox>
+          <SpringLoader />
+
+          <SpringLoader
+            size={100}
+            thickness={8}
+            colorSequence={[
+              palette.livingCoral,
+              palette.ultraViolet,
+              palette.greenery
+            ]}
+          />
+        </VerticalBox>
+      )
+    },
+  },
+  {
+    bg: '#FECBCA',
+    color: '#FD5963',
+    category: 'Colorful Spring',
+    demoComponent: () => {
+      return (
+        <VerticalBox>
+          <MBankLoader
+            size={80}
+            thickness={6}
+          />
+        </VerticalBox>
+      )
+    },
+  },
+  {
+    bg: '#193B8C',
+    color: '#FECBCD',
+    category: 'Ripple',
+    demoComponent: () => <></>,
+  },
+  {
+    bg: '#FDBD50',
+    color: '#F5F5EB',
+    category: '? Samsung ?',
+    demoComponent: () => <></>,
+  },
+]
 
 export function SimpleLoadersScreen ({ navigation, route }: DrawerScreenProps<DrawerStackParamList, 'Loaders'>) {
-  const progress = useSharedValue(0);
+  const [selectedCardIndex, setSelectedCardIndex] = useState<number | null>(null);
 
-  useEffect(() => {
-    const progressUpdateInterval = setInterval(() => {
-      progress.value = (progress.value + Math.random() * 5) % 101;
-    }, 300);
-
-    return () => clearInterval(progressUpdateInterval);
-
-  }, []);
+  console.log('Selected index:', selectedCardIndex);
 
   return (
     <Container>
+      <StatusBar hidden />
+
+      {CARD_PROPERTIES.map(({ bg, color, category, demoComponent }, index) => {
+        return (
+          <CardContainer
+            activeOpacity={0.8}
+            key={category}
+            onPress={() => {
+              setSelectedCardIndex(index === selectedCardIndex ? null : index);
+            }}
+          >
+            <Card backgroundColor={bg}>
+              <CardText color={color}>{category}</CardText>
+              {index === selectedCardIndex && (
+                <Animated.View style={{ flexGrow: 1 }} entering={FadeIn.delay(100).springify()}>
+                  {demoComponent()}
+                </Animated.View>
+              )}
+            </Card>
+          </CardContainer>
+        );
+      })}
+
       <OpenDrawerButton navigation={navigation} route={route} />
-
-      <VerticalBox>
-        <SimpleRotatingLoader />
-
-        <SimpleRotatingLoader
-          color={palette.ultraViolet}
-          trackColor={palette.grey50}
-          size={80}
-          thickness={8}
-          speed={2}
-        />
-
-        <SimpleRotatingLoader
-          color={palette.livingCoral}
-          trackColor={palette.livingCoral}
-          size={40}
-          thickness={4}
-          speed={3}
-        />
-      </VerticalBox>
-
-      <VerticalBox>
-        <SpringLoader />
-
-        <SpringLoader
-          size={100}
-          thickness={8}
-          colorSequence={[
-            palette.livingCoral,
-            palette.ultraViolet,
-            palette.greenery
-          ]}
-        />
-
-        <MBankLoader
-          size={80}
-          thickness={6}
-        />
-      </VerticalBox>
-
     </Container>
   );
 }
