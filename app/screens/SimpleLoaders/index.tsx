@@ -10,6 +10,7 @@ import { OpenDrawerButton } from 'components/Navigation/OpenDrawerButton';
 
 import { SimpleRotatingLoader } from './components/SimpleRotatingLoader';
 import { SpringLoader, MBankLoader } from './components/SpringLoader';
+import { RippleLoader } from './components/RippleLoader';
 
 const Container = styled.View`
   flex: 1;
@@ -98,7 +99,7 @@ const CARD_PROPERTIES: Array<{
             ]}
           />
         </VerticalBox>
-      )
+      );
     },
   },
   {
@@ -113,15 +114,21 @@ const CARD_PROPERTIES: Array<{
             thickness={6}
           />
         </VerticalBox>
-      )
+      );
     },
   },
   {
     bg: '#193B8C',
     bgImmutable: true,
-    color: '#FECBCD',
+    color: palette.roseQuartz,
     category: 'Ripple',
-    demoComponent: () => <></>,
+    demoComponent: () => {
+      return (
+        <VerticalBox>
+          <RippleLoader />
+        </VerticalBox>
+      );
+    },
   },
   {
     bg: '#FDBD50',

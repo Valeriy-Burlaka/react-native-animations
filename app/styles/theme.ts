@@ -10,6 +10,7 @@ export const palette = {
   greenery: '#88B04B',
   livingCoral: '#FF6F61',
   mimosa: '#EFC050',
+  roseQuartz: '#FECBCD',
   ultraViolet: '#6B5B95',
 
   // MBank colour palette
