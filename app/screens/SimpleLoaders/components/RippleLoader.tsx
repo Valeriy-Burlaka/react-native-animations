@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
 import { View } from 'react-native';
+import styled from '@emotion/native';
 import Animated, {
   interpolate,
   useAnimatedStyle,
@@ -8,24 +9,27 @@ import Animated, {
   withTiming,
   withRepeat,
 } from 'react-native-reanimated';
-import Svg, { Circle } from 'react-native-svg';
 
 import { palette } from 'styles';
 
-// const AnimatedSvg = Animated.createAnimatedComponent(Svg);
-const AnimatedCircle = Animated.createAnimatedComponent(Circle);
+const AnimatedCircle = Animated.createAnimatedComponent(styled.View<{ color: string; size: number }>`
+  width: ${({ size }) => `${size}px`};
+  height: ${({ size }) => `${size}px`};
+  border-color: ${({ color }) => color};
+  border-radius: ${({ size }) => `${size / 2}px`};
+  border-width: ${({ size }) => `${Math.round(size / 10)}px`};
+  shadow-color: ${({ color }) => color};
+  shadow-offset: 0px 0px;
+  shadow-opacity: 1;
+  shadow-radius: ${({ size }) => `${Math.round(size / 10)}px`};
+`);
 
 interface Props {
+  color?: string;
   size?: number;
 }
 
-export function RippleLoader ({ size = 100 }: Props) {
-
-  const thickness = Math.round(size / 10);
-  const strokeWidth = thickness;
-  const radius = (size - strokeWidth) / 2;
-  const color = palette.roseQuartz;
-
+export function RippleLoader ({ color = palette.roseQuartz, size = 100 }: Props) {
   const animationProgress = useSharedValue(0);
 
   useEffect(() => {
@@ -56,31 +60,11 @@ export function RippleLoader ({ size = 100 }: Props) {
   });
 
   return (
-    <Animated.View
-      style={[
-        {
-          minHeight: size * 1.25,
-          // marginTop: size * 0.25,
-          alignItems: 'center',
-          justifyContent: 'center',
-        },
-        animatedViewStyles,
-      ]}
-    >  
-      <Svg
-        width={size} height={size}
-        viewBox={`0 0 ${size} ${size}`}
-        >
-        <AnimatedCircle
-          cx={size / 2}
-          cy={size / 2}
-          r={radius}
-          fill="none"
-          stroke={color}
-          strokeWidth={strokeWidth}
-          />
-      </Svg>
-    </Animated.View>
+    <AnimatedCircle
+      color={color}
+      size={size}
+      style={animatedViewStyles}
+    />
   );
 };
 
