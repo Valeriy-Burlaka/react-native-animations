@@ -11,6 +11,7 @@ import { OpenDrawerButton } from 'components/Navigation/OpenDrawerButton';
 import { SimpleRotatingLoader } from './components/SimpleRotatingLoader';
 import { SpringLoader, MBankLoader } from './components/SpringLoader';
 import { RippleLoader } from './components/RippleLoader';
+import { BreathingLoader } from './components/BreathingLoader';
 
 const Container = styled.View`
   flex: 1;
@@ -125,7 +126,8 @@ const CARD_PROPERTIES: Array<{
     demoComponent: () => {
       return (
         <VerticalBox>
-          <RippleLoader />
+          <RippleLoader color={palette.roseQuartz} />
+          <BreathingLoader />
         </VerticalBox>
       );
     },
