@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { StatusBar } from 'react-native';
+import { Dimensions, SafeAreaView, StatusBar, StyleSheet, View } from 'react-native';
 import styled from '@emotion/native';
 import Animated, { FadeIn } from 'react-native-reanimated';
 import type { DrawerScreenProps } from '@react-navigation/drawer';
@@ -14,7 +14,9 @@ import { ColorfulSpringLoader } from './components/ColorfulSpringLoader';
 import { RippleLoader } from './components/RippleLoader';
 import { BreathingLoader } from './components/BreathingLoader';
 
-const Container = styled.View`
+const { height: screenHeight } = Dimensions.get('window');
+
+const ContentArea = styled(SafeAreaView)`
   flex: 1;
 `;
 
@@ -52,7 +54,7 @@ const CARD_PROPERTIES: Array<{
   demoComponent: () => React.ReactNode;
 }> = [
   {
-    bg: '#A8DDE9',
+    bg: palette.limpetShell,
     color: '#3F5B98',
     category: 'Simple Rotation',
     demoComponent: () => {
@@ -133,7 +135,7 @@ const CARD_PROPERTIES: Array<{
     },
   },
   {
-    bg: palette.grey80,
+    bg: palette.inkwell,
     bgImmutable: true,
     color: '#F5F5EB',
     category: 'Breathe',
@@ -145,41 +147,84 @@ const CARD_PROPERTIES: Array<{
       );
     },
   },
-]
+];
+
+function TopHalfScreenBackground ({ backgroundColor }: { backgroundColor: string }) {
+  return (
+    <View
+      style={[
+        StyleSheet.absoluteFillObject,
+        {
+          bottom: screenHeight / 2,
+          backgroundColor,
+        }
+      ]}
+    />
+  );
+}
+
+function BottomHalfScreenBackground ({ backgroundColor }: { backgroundColor: string }) {
+  return (
+    <View
+      style={[
+        StyleSheet.absoluteFillObject,
+        {
+          top: screenHeight / 2,
+          backgroundColor,
+        }
+      ]}
+    />
+  );
+}
 
 export function SimpleLoadersScreen ({ navigation, route }: DrawerScreenProps<DrawerStackParamList, 'Loaders'>) {
   const [selectedCardIndex, setSelectedCardIndex] = useState<number | null>(null);
+  const isFirstCardSelected = selectedCardIndex === 0;
 
-  console.log('Selected index:', selectedCardIndex);
-
-
+  const activeDemoBackgroundColor = palette.white;
 
   return (
-    <Container>
-      <StatusBar hidden />
+    <View
+      style={{
+        flex: 1,
+      }}
+    >
+      {/* Should be the same as the background of the first Card. */}
+      <TopHalfScreenBackground
+        backgroundColor={isFirstCardSelected ? activeDemoBackgroundColor : CARD_PROPERTIES[0].bg}
+      />
+      {/* Should be the same as the background of the last Card. */}
+      <BottomHalfScreenBackground backgroundColor={CARD_PROPERTIES[CARD_PROPERTIES.length -1].bg} />
+      <ContentArea >
+        {/*
+          StatusBar `backgroundColor` property is Android-only.
+          See https://reactnative.dev/docs/statusbar.html#backgroundcolor-android
+        */}
+        <StatusBar backgroundColor={palette.limpetShell} barStyle="dark-content" />
 
-      {CARD_PROPERTIES.map(({ bg, bgImmutable, color, category, demoComponent }, index) => {
-        return (
-          <CardContainer
-            activeOpacity={0.8}
-            key={category}
-            onPress={() => {
-              setSelectedCardIndex(index === selectedCardIndex ? null : index);
-            }}
-          >
-            <Card backgroundColor={index === selectedCardIndex && !bgImmutable ? palette.white : bg}>
-              <CardText color={color}>{category}</CardText>
-              {index === selectedCardIndex && (
-                <Animated.View entering={FadeIn.delay(100).springify()}>
-                  {demoComponent()}
-                </Animated.View>
-              )}
-            </Card>
-          </CardContainer>
-        );
-      })}
+        {CARD_PROPERTIES.map(({ bg, bgImmutable, color, category, demoComponent }, index) => {
+          return (
+            <CardContainer
+              activeOpacity={0.8}
+              key={category}
+              onPress={() => {
+                setSelectedCardIndex(index === selectedCardIndex ? null : index);
+              }}
+            >
+              <Card backgroundColor={index === selectedCardIndex && !bgImmutable ? activeDemoBackgroundColor : bg}>
+                <CardText color={color}>{category}</CardText>
+                {index === selectedCardIndex && (
+                  <Animated.View entering={FadeIn.delay(100).springify()}>
+                    {demoComponent()}
+                  </Animated.View>
+                )}
+              </Card>
+            </CardContainer>
+          );
+        })}
 
-      <OpenDrawerButton navigation={navigation} route={route} />
-    </Container>
+        <OpenDrawerButton navigation={navigation} route={route} />
+      </ContentArea>
+    </View>
   );
 }
