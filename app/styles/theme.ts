@@ -10,6 +10,8 @@ export const palette = {
   greenery: '#88B04B',
   livingCoral: '#FF6F61',
   mimosa: '#EFC050',
+  ochre: '#FDBD50',
+  princessBlue: '#00539C',
   roseQuartz: '#FECBCD',
   ultraViolet: '#6B5B95',
 

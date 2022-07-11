@@ -15,7 +15,7 @@ import hexToRgba from 'hex-to-rgba';
 
 import { palette } from 'styles';
 
-interface Props {
+export interface Props {
   color?: string;
   trackColor?: string;
   size?: number;
@@ -165,19 +165,3 @@ export function SpringLoader ({
     </View>
   );
 }
-
-export const MBankLoader = ({...props}: Props) => {
-  return (
-    <SpringLoader
-      {...props}
-      colorSequence={[
-        palette.mbankTheme.red,
-        palette.mbankTheme.black,
-        palette.mbankTheme.orange,
-        palette.mbankTheme.scarlet,
-        palette.mbankTheme.blue,
-        palette.mbankTheme.green,
-      ]}
-    />
-  )
-};

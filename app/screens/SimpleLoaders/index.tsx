@@ -9,7 +9,8 @@ import { DrawerStackParamList } from 'components/Navigation/types';
 import { OpenDrawerButton } from 'components/Navigation/OpenDrawerButton';
 
 import { SimpleRotatingLoader } from './components/SimpleRotatingLoader';
-import { SpringLoader, MBankLoader } from './components/SpringLoader';
+import { SpringLoader } from './components/SpringLoader';
+import { ColorfulSpringLoader } from './components/ColorfulSpringLoader';
 import { RippleLoader } from './components/RippleLoader';
 import { BreathingLoader } from './components/BreathingLoader';
 
@@ -110,7 +111,7 @@ const CARD_PROPERTIES: Array<{
     demoComponent: () => {
       return (
         <VerticalBox>
-          <MBankLoader
+          <ColorfulSpringLoader
             size={80}
             thickness={6}
           />
@@ -127,16 +128,22 @@ const CARD_PROPERTIES: Array<{
       return (
         <VerticalBox>
           <RippleLoader color={palette.roseQuartz} />
-          <BreathingLoader />
         </VerticalBox>
       );
     },
   },
   {
-    bg: '#FDBD50',
+    bg: palette.grey80,
+    bgImmutable: true,
     color: '#F5F5EB',
-    category: '? Samsung ?',
-    demoComponent: () => <></>,
+    category: 'Breathe',
+    demoComponent: () => {
+      return (
+        <VerticalBox>
+          <BreathingLoader />
+        </VerticalBox>
+      );
+    },
   },
 ]
 
