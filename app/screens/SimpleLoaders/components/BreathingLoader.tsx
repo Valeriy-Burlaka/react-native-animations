@@ -1,26 +1,14 @@
 import React, { useEffect } from 'react';
 import { View } from 'react-native';
-import styled from '@emotion/native';
 import Animated, {
   interpolate,
   useAnimatedStyle,
-  useAnimatedProps,
   useSharedValue,
   withTiming,
   withRepeat,
 } from 'react-native-reanimated';
 
 import { palette } from 'styles';
-
-const AnimatedCircle = Animated.createAnimatedComponent(styled.View<{ color: string; size: number }>`
-  width: ${({ size }) => `${size}px`};
-  height: ${({ size }) => `${size}px`};
-  box-sizing: content-box;
-  border-color: ${({ color }) => color};
-  shadow-color: ${({ color }) => color};
-  shadow-offset: 0px 0px;
-  shadow-radius: 10px;
-`);
 
 interface Props {
   color?: string;
@@ -30,34 +18,47 @@ interface Props {
 export function BreathingLoader ({ color = palette.white, size = 100 }: Props) {
   const animationProgress = useSharedValue(0);
 
+  const growToSize = size * 1.2;
+
   useEffect(() => {
     animationProgress.value = withRepeat(
       withTiming(
         1,
         {
-          duration: 1500,
+          duration: 2000,
         },
       ),
       -1,
+      true,
     );
   }, []);
 
   const animatedViewStyles = useAnimatedStyle(() => {
     return {
+      width: interpolate(
+        animationProgress.value,
+        [0, 1],
+        [size, growToSize],
+      ),
+      height: interpolate(
+        animationProgress.value,
+        [0, 1],
+        [size, growToSize],
+      ),
       borderRadius: interpolate(
         animationProgress.value,
         [0, 1],
-        [size / 2, (size + 20) / 2],
+        [size / 2, (growToSize) / 2],
       ),
       borderWidth: interpolate(
         animationProgress.value,
         [0, 1],
-        [0, size / 10],
+        [0.1, size / 10],
       ),
       shadowOpacity: interpolate(
         animationProgress.value,
         [0, 1],
-        [0.5, 1],
+        [0, 1],
       )
     }
   });
@@ -68,12 +69,19 @@ export function BreathingLoader ({ color = palette.white, size = 100 }: Props) {
         flex: 1,
         alignItems: 'center',
         justifyContent: 'center',
+        minHeight: growToSize,
       }}
     >
-      <AnimatedCircle
-        color={color}
-        size={size}
-        style={animatedViewStyles}
+      <Animated.View
+        style={[
+          {
+            borderColor: color,
+            shadowColor: color,
+            shadowOffset: { width: 0, height: 0 },
+            shadowRadius: 10,
+          },
+          animatedViewStyles
+        ]}
       />
     </View>
   );
