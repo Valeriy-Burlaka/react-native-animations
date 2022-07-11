@@ -52,14 +52,19 @@ export function BreathingLoader ({ color = palette.white, size = 100 }: Props) {
       ),
       borderWidth: interpolate(
         animationProgress.value,
-        [0, 1],
-        [0.1, size / 10],
+        [0, 0.1, 0.9, 1],
+        [0, 0, size / 11, size / 10],
       ),
       shadowOpacity: interpolate(
         animationProgress.value,
         [0, 1],
         [0, 1],
-      )
+      ),
+      shadowRadius: interpolate(
+        animationProgress.value,
+        [0, 0.5, 1],
+        [6, 10, 12],
+      ),
     }
   });
 
@@ -69,7 +74,7 @@ export function BreathingLoader ({ color = palette.white, size = 100 }: Props) {
         flex: 1,
         alignItems: 'center',
         justifyContent: 'center',
-        minHeight: growToSize,
+        minHeight: growToSize + 30,
       }}
     >
       <Animated.View
