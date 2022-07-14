@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
-import { Dimensions, SafeAreaView, StatusBar, StyleSheet, View } from 'react-native';
+import { Dimensions, StatusBar, StyleSheet, View } from 'react-native';
 import styled from '@emotion/native';
 import Animated, { FadeIn } from 'react-native-reanimated';
 import type { DrawerScreenProps } from '@react-navigation/drawer';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { palette } from 'styles';
 import { DrawerStackParamList } from 'components/Navigation/types';
@@ -15,10 +16,6 @@ import { RippleLoader } from './components/RippleLoader';
 import { BreathingLoader } from './components/BreathingLoader';
 
 const { height: screenHeight } = Dimensions.get('window');
-
-const ContentArea = styled(SafeAreaView)`
-  flex: 1;
-`;
 
 const CardContainer = styled.TouchableOpacity`
   flex-grow: 1;
@@ -155,21 +152,7 @@ function TopHalfScreenBackground ({ backgroundColor }: { backgroundColor: string
       style={[
         StyleSheet.absoluteFillObject,
         {
-          bottom: screenHeight / 2,
-          backgroundColor,
-        }
-      ]}
-    />
-  );
-}
-
-function BottomHalfScreenBackground ({ backgroundColor }: { backgroundColor: string }) {
-  return (
-    <View
-      style={[
-        StyleSheet.absoluteFillObject,
-        {
-          top: screenHeight / 2,
+          bottom: screenHeight * 0.6,
           backgroundColor,
         }
       ]}
@@ -184,7 +167,8 @@ export function SimpleLoadersScreen ({ navigation, route }: DrawerScreenProps<Dr
   const activeDemoBackgroundColor = palette.white;
 
   return (
-    <View
+    <SafeAreaView
+      edges={['top']}
       style={{
         flex: 1,
       }}
@@ -193,9 +177,6 @@ export function SimpleLoadersScreen ({ navigation, route }: DrawerScreenProps<Dr
       <TopHalfScreenBackground
         backgroundColor={isFirstCardSelected ? activeDemoBackgroundColor : CARD_PROPERTIES[0].bg}
       />
-      {/* Should be the same as the background of the last Card. */}
-      <BottomHalfScreenBackground backgroundColor={CARD_PROPERTIES[CARD_PROPERTIES.length -1].bg} />
-      <ContentArea >
         {/*
           StatusBar `backgroundColor` property is Android-only.
           See https://reactnative.dev/docs/statusbar.html#backgroundcolor-android
@@ -205,7 +186,7 @@ export function SimpleLoadersScreen ({ navigation, route }: DrawerScreenProps<Dr
         {CARD_PROPERTIES.map(({ bg, bgImmutable, color, category, demoComponent }, index) => {
           return (
             <CardContainer
-              activeOpacity={0.8}
+              activeOpacity={0.9}
               key={category}
               onPress={() => {
                 setSelectedCardIndex(index === selectedCardIndex ? null : index);
@@ -223,8 +204,7 @@ export function SimpleLoadersScreen ({ navigation, route }: DrawerScreenProps<Dr
           );
         })}
 
-        <OpenDrawerButton navigation={navigation} route={route} />
-      </ContentArea>
-    </View>
+      <OpenDrawerButton navigation={navigation} route={route} />
+    </SafeAreaView>
   );
 }
