@@ -26,6 +26,7 @@ const colors = [
   palette['livingCoral'],
   palette['greenery'],
   palette['white'],
+  palette['mimosa'],
 ];
 
 const styles = StyleSheet.create({
@@ -144,10 +145,7 @@ export default function CustomDrawer({ navigation, routes, selectedRoute }: Draw
     };
   });
 
-  console.log('Selected route:', selectedRoute);
-
   const onPressRoute = (routeName: string) => {
-    console.log(`Pressed route "${routeName}"`);
     navigation.navigate(routeName);
   };
 

@@ -5,8 +5,9 @@ import { NavigationContainer } from '@react-navigation/native';
 import { DrawerNavigationHelpers } from '@react-navigation/drawer/lib/typescript/src/types';
 
 import CustomerDrawer from 'components/CustomDrawer';
-import { SimpleLoadersScreen } from 'screens/SimpleLoaders';
 import { ProgressBarsScreen } from 'screens/ProgressBars';
+import { SimpleLoadersScreen } from 'screens/SimpleLoaders';
+import { AdvancedLoadersScreen } from 'screens/AdvancedLoaders';
 
 import { GetStartedScreen } from 'screens';
 
@@ -42,6 +43,7 @@ export default function Navigation() {
         <Drawer.Screen name="GetStarted" component={GetStartedScreen} />
         <Drawer.Screen name="ProgressBars" component={ProgressBarsScreen} />
         <Drawer.Screen name="Loaders" component={SimpleLoadersScreen} />
+        <Drawer.Screen name="Loaders - 2" component={AdvancedLoadersScreen} />
       </Drawer.Navigator>
     </NavigationContainer>
   )
