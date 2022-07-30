@@ -6,6 +6,7 @@ import Animated, {
   useDerivedValue,
   useSharedValue,
   withRepeat,
+  withSequence,
   withTiming,
 } from 'react-native-reanimated';
 import Svg, { Circle, G } from 'react-native-svg';
@@ -26,7 +27,10 @@ export function SamsungCircleLoader () {
 
   useEffect(() => {
     animationProgress.value = withRepeat(
-      withTiming(1, { duration: 2000 }),
+      withSequence(
+        withTiming(1, { duration: 2000 }),
+        withTiming(2, { duration: 2000 }),
+      ),
       -1,
     );
   }, []);
@@ -36,8 +40,14 @@ export function SamsungCircleLoader () {
       animationProgress.value,
       // [0, 0.4, 0.6, 1],
       // [circumference * 0.5, circumference * 0.1, circumference * 0.2, circumference * 0.5],
-      [0, 0.5, 1],
-      [circumference * 0.5, circumference * 0.05, circumference * 0.5],
+      [0, 0.5, 1, 1.5, 2],
+      [
+        circumference * 0.5,
+        circumference * 0.05,
+        circumference * 0.1,
+        circumference * 0.1,
+        circumference * 0.5,
+      ],
       Extrapolate.CLAMP,
     )
   });
