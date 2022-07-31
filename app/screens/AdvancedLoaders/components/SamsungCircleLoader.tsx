@@ -6,7 +6,6 @@ import Animated, {
   useDerivedValue,
   useSharedValue,
   withRepeat,
-  withSequence,
   withTiming,
 } from 'react-native-reanimated';
 import Svg, { Circle, G } from 'react-native-svg';
@@ -27,10 +26,7 @@ export function SamsungCircleLoader () {
 
   useEffect(() => {
     animationProgress.value = withRepeat(
-      withSequence(
-        withTiming(1, { duration: 2000 }),
-        withTiming(2, { duration: 2000 }),
-      ),
+      withTiming(3, { duration: 6000 }),
       -1,
     );
   }, []);
@@ -38,8 +34,6 @@ export function SamsungCircleLoader () {
   const dashArrayStroke = useDerivedValue(() => {
     return interpolate(
       animationProgress.value,
-      // [0, 0.4, 0.6, 1],
-      // [circumference * 0.5, circumference * 0.1, circumference * 0.2, circumference * 0.5],
       [0, 0.5, 1, 1.5, 2],
       [
         circumference * 0.5,
@@ -64,12 +58,11 @@ export function SamsungCircleLoader () {
     return {
       strokeDashoffset: interpolate(
         animationProgress.value,
-        [0, 1],
+        [0, 3],
         [
           circumference * -0.5 - (dashOffsetCompensation.value),
-          circumference * -1.5 - (dashOffsetCompensation.value),
+          circumference * -3.5 - (dashOffsetCompensation.value),
         ],
-        // [circumference * -0.5, circumference * -1.5],
       ),
       strokeDasharray: [dashArrayStroke.value, dashArrayGap.value],
     };
@@ -79,12 +72,11 @@ export function SamsungCircleLoader () {
     return {
       strokeDashoffset: interpolate(
         animationProgress.value,
-        [0, 1],
+        [0, 3],
         [
-          0 - (dashOffsetCompensation.value),
-          -circumference - (dashOffsetCompensation.value),
+          -dashOffsetCompensation.value,
+          -circumference * 3 - (dashOffsetCompensation.value),
         ],
-        // [0, -circumference],
       ),
       strokeDasharray: [dashArrayStroke.value, dashArrayGap.value],
     };
@@ -115,28 +107,6 @@ export function SamsungCircleLoader () {
             strokeLinecap="round"
             animatedProps={greenHalfCircleProps}
           />
-          {/* <Circle
-            cx={size / 2}
-            cy={size / 2}
-            r={radius}
-            fill="none"
-            stroke={palette.princessBlue}
-            strokeWidth={strokeWidth}
-            strokeDasharray={`${circumference * 0.05} ${circumference - (circumference * 0.05)}`}
-            strokeDashoffset={-circumference * 1 - (0.5 * circumference - circumference * 0.05)}
-            strokeLinecap="round"
-          />
-          <Circle
-            cx={size / 2}
-            cy={size / 2}
-            r={radius}
-            fill="none"
-            stroke={palette.greenery}
-            strokeWidth={strokeWidth}
-            strokeDasharray={`${circumference * 0.05} ${circumference - (circumference * 0.05)}`}
-            strokeDashoffset={circumference * -0.5 - (0.5 * circumference - circumference * 0.05)}
-            strokeLinecap="round"
-          /> */}
         </G>
       </Svg>
   );
